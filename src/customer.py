@@ -1,5 +1,9 @@
 from dataclasses import dataclass
 
+import re
+
+EMAIL_REGEX = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+
 @dataclass
 class Customer:
     customer_id: int
@@ -9,6 +13,8 @@ class Customer:
     updated_by: str
 
 def update_customer_email(customer, new_email, updated_by):
-    customer.email = new_email
+    if not isinstance(new_email, str) or not EMAIL_REGEX.match(new_email):
+        raise ValueError("invalid-email")
+    customer.email = new_email.lower()
     customer.updated_by = updated_by
     return customer

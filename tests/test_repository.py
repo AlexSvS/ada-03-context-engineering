@@ -15,3 +15,25 @@ def test_repository_update_preserves_customer_id():
     repo.add(customer)
     repo.update_email(10, "new@example.com", "agent")
     assert repo.get(10).customer_id == 10
+
+def test_repository_update_email_success():
+    repo = CustomerRepository()
+    customer = Customer(10, "Ana", "ana@example.com", "admin", "admin")
+    repo.add(customer)
+    updated = repo.update_email(10, "NEW@example.com", "agent")
+    assert updated.email == "new@example.com"
+    assert updated.updated_by == "agent"
+    stored = repo.get(10)
+    assert stored.email == "new@example.com"
+    assert stored.updated_by == "agent"
+
+def test_repository_update_email_invalid():
+    repo = CustomerRepository()
+    customer = Customer(10, "Ana", "ana@example.com", "admin", "admin")
+    repo.add(customer)
+    try:
+        repo.update_email(10, "invalid", "agent")
+        assert False
+    except ValueError as exc:
+        assert str(exc) == "invalid-email"
+    assert repo.get(10).email == "ana@example.com"
