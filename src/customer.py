@@ -12,5 +12,7 @@ def update_customer_email(customer, new_email, updated_by):
     if "@" not in new_email:
         raise ValueError("invalid-email")
     customer.email = new_email.lower()
+    if not isinstance(updated_by, str) or not updated_by.strip(): 
+        raise ValueError("invalid-updated-by")
     customer.updated_by = updated_by
     return customer
