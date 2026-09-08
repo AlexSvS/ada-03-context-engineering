@@ -17,8 +17,6 @@ class CustomerRepository:
         customer = self.get(customer_id)
         if customer is None:
             raise ValueError("customer-not-found")
-        if not isinstance(updated_by, str) or not updated_by.strip(): 
-            raise ValueError("invalid-updated-by")
         updated = update_customer_email(customer, new_email, updated_by)
         self.save(updated)
         return updated
